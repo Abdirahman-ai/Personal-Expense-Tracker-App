@@ -1,3 +1,6 @@
+""""
+ Expense class
+"""""
 class Expense:
     def __init__(self, id, title, category, amount, date, payment_method):
         self.id = id

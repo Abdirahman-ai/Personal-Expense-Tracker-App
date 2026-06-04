@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ExpenseTracker.iml" filepath="$PROJECT_DIR$/ExpenseTracker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/database/database.iml" filepath="$PROJECT_DIR$/app/database/database.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/models/models.iml" filepath="$PROJECT_DIR$/app/models/models.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/repositories/repositories.iml" filepath="$PROJECT_DIR$/app/repositories/repositories.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/services/services.iml" filepath="$PROJECT_DIR$/app/services/services.iml" />
+    </modules>
+  </component>
+</project>
