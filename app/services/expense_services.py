@@ -46,13 +46,14 @@ class ExpenseService:
         self.expense_repository.delete_expense_by_title(expense)
         return None
 
-    def update_expense_id(self, expense_id, expense):
-        expense = self.expense_repository.get_expense_by_id(expense_id)
-        if expense is None:
+    def update_expense_by_id(self, expense_id, expense):
+        existing_expense = self.expense_repository.get_expense_by_id(expense_id)
+
+        if existing_expense is None:
             print("Expense not found")
             return None
+
         self.expense_repository.update_expense_by_id(expense_id, expense)
-        return None
 
     def get_all_expenses(self):
         return self.expense_repository.get_all_expenses()

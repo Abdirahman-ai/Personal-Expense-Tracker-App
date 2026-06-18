@@ -1,8 +1,7 @@
-"""""
+"""
 Pandas + Matplotlib charts
-"""""
+"""
 import pandas as pd
-import sqlite3
 import matplotlib.pyplot as plt
 from database.connection import get_connection
 
@@ -11,8 +10,19 @@ def load_expenses_dataframe():
     conn = get_connection()
 
     try:
-        df = pd.read_sql_query("SELECT * FROM expenses", conn)
-        # print(f"Loaded expenses dataframe {df}")
+        query = """
+                SELECT
+                    id,
+                    title,
+                    category,
+                    amount,
+                    date,
+                    payment_method
+                FROM expenses \
+                """
+
+        df = pd.read_sql(query, conn)
+
         return df
 
     finally:
@@ -28,10 +38,14 @@ def show_spending_by_category_bar_chart():
 
     category_totals = df.groupby("category")["amount"].sum()
 
+    plt.figure(figsize=(8, 5))
     plt.bar(category_totals.index, category_totals.values)
+
     plt.title("Total Spending By Category")
     plt.xlabel("Category")
     plt.ylabel("Amount Spent")
+
+    plt.tight_layout()
     plt.show()
 
 
@@ -44,6 +58,8 @@ def show_spending_by_payment_method_pie_chart():
 
     payment_totals = df.groupby("payment_method")["amount"].sum()
 
+    plt.figure(figsize=(8, 5))
+
     plt.pie(
         payment_totals.values,
         labels=payment_totals.index,
@@ -51,9 +67,12 @@ def show_spending_by_payment_method_pie_chart():
     )
 
     plt.title("Spending By Payment Method")
+    plt.tight_layout()
     plt.show()
 
+
 if __name__ == "__main__":
+
     print("1. Spending By Category Bar Chart")
     print("2. Spending By Payment Method Pie Chart")
 
@@ -61,7 +80,9 @@ if __name__ == "__main__":
 
     if choice == "1":
         show_spending_by_category_bar_chart()
+
     elif choice == "2":
         show_spending_by_payment_method_pie_chart()
+
     else:
         print("Invalid choice.")

@@ -15,7 +15,14 @@ class Expense:
 
     # TODO: toSting method
     def __str__(self):
-        return f"ID: {self.id} | {self.title} | {self.amount} | {self.date} | {self.payment_method}";
+        return (
+            f"ID: {self.id} | "
+            f"{self.title} | "
+            f"{self.category} | "
+            f"${self.amount:.2f} | "
+            f"{self.date} | "
+            f"{self.payment_method}"
+        )
 
     def __repr__(self):
         return self.__str__()

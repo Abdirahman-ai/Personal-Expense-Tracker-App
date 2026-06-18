@@ -1,29 +1,38 @@
-"""""
- SQL database operations
-"""""
-import sqlite3
+"""
+SQL database operations
+"""
 
-from database.connection import create_expenses_table, get_connection
+import mysql.connector
+
+from database.connection import get_connection
 from models.expense import Expense
+
 
 class ExpenseRepository:
 
     def add_expense(self, expense):
         conn = get_connection()
         cursor = conn.cursor()
+
         try:
             cursor.execute("""
-            INSERT INTO expenses (title, category, amount, date, payment_method) values (?, ?, ?, ?, ?)""",(
-                expense.title,
-                expense.category,
-                expense.amount,
-                expense.date,
-                expense.payment_method
-            ))
+                           INSERT INTO expenses (title, category, amount, date, payment_method)
+                           VALUES (%s, %s, %s, %s, %s)
+                           """, (
+                               expense.title,
+                               expense.category,
+                               expense.amount,
+                               expense.date,
+                               expense.payment_method
+                           ))
+
             conn.commit()
-        except sqlite3.Error as error:
-            print(f"insertion database Error: {error}")
+            print("Expense added")
+
+        except mysql.connector.Error as error:
+            print(f"Insertion database error: {error}")
             conn.rollback()
+
         finally:
             cursor.close()
             conn.close()
@@ -31,38 +40,62 @@ class ExpenseRepository:
     def get_all_expenses(self):
         conn = get_connection()
         cursor = conn.cursor()
+
         try:
             cursor.execute("SELECT * FROM expenses")
+            rows = cursor.fetchall()
 
-            expenses = cursor.fetchall()
             expenses_table = []
-            for expense in expenses:
-                exp = Expense(
-                    expense[0],
-                    expense[1],
-                    expense[2],
-                    expense[3],
-                    expense[4],
-                    expense[5],
+
+            for row in rows:
+                expense = Expense(
+                    row[0],
+                    row[1],
+                    row[2],
+                    row[3],
+                    row[4],
+                    row[5]
                 )
-                expenses_table.append(exp)
-            return expenses
-        except sqlite3.Error as error:
-           print(f"expenses database Error: {error}")
-           return []
+                expenses_table.append(expense)
+
+            return expenses_table
+
+        except mysql.connector.Error as error:
+            print(f"Expenses database error: {error}")
+            return []
+
         finally:
-           cursor.close()
-           conn.close()
+            cursor.close()
+            conn.close()
 
     def get_expense_by_id(self, expense_id):
         conn = get_connection()
         cursor = conn.cursor()
+
         try:
-            cursor.execute("SELECT * FROM expenses WHERE id = ?",(expense_id,))
-            expense = cursor.fetchone()
-            return expense
-        except sqlite3.Error as error:
-            print(f"expenses database Error: {error}")
+            cursor.execute(
+                "SELECT * FROM expenses WHERE id = %s",
+                (expense_id,)
+            )
+
+            row = cursor.fetchone()
+
+            if row is None:
+                return None
+
+            return Expense(
+                row[0],
+                row[1],
+                row[2],
+                row[3],
+                row[4],
+                row[5]
+            )
+
+        except mysql.connector.Error as error:
+            print(f"Expenses database error: {error}")
+            return None
+
         finally:
             cursor.close()
             conn.close()
@@ -70,13 +103,31 @@ class ExpenseRepository:
     def get_expense_by_title(self, expense_title):
         conn = get_connection()
         cursor = conn.cursor()
+
         try:
-            cursor.execute("SELECT * FROM expenses WHERE title = ?",(expense_title,))
-            expense = cursor.fetchone()
-            return expense
-        except sqlite3.Error as error:
-            print(f"expenses database Error: {error}")
-            return []
+            cursor.execute(
+                "SELECT * FROM expenses WHERE title = %s",
+                (expense_title,)
+            )
+
+            row = cursor.fetchone()
+
+            if row is None:
+                return None
+
+            return Expense(
+                row[0],
+                row[1],
+                row[2],
+                row[3],
+                row[4],
+                row[5]
+            )
+
+        except mysql.connector.Error as error:
+            print(f"Expenses database error: {error}")
+            return None
+
         finally:
             cursor.close()
             conn.close()
@@ -84,29 +135,61 @@ class ExpenseRepository:
     def delete_expense_by_id(self, expense_id):
         conn = get_connection()
         cursor = conn.cursor()
+
         try:
-            cursor.execute("DELETE FROM expenses WHERE id = ?",(expense_id,))
+            cursor.execute(
+                "DELETE FROM expenses WHERE id = %s",
+                (expense_id,)
+            )
+
             conn.commit()
-            print("expenses deleted")
-        except sqlite3.Error as error:
-            print(f"expenses database Error: {error}")
+
+            if cursor.rowcount == 0:
+                print("No expense found with that ID")
+            else:
+                print("Expense deleted")
+
+        except mysql.connector.Error as error:
+            print(f"Expenses database error: {error}")
+            conn.rollback()
+
         finally:
             cursor.close()
             conn.close()
 
     def update_expense_by_id(self, expense_id, expense):
-        """"
-        DON'T FORGET TO CHECK IF ID IS AVAILABLE IN DATABASE 
-        """""
         conn = get_connection()
         cursor = conn.cursor()
 
         try:
-            cursor.execute("UPDATE expenses SET title = ? WHERE id = ?",(expense.title, expense_id))
+            cursor.execute("""
+                           UPDATE expenses
+                           SET title = %s,
+                               category = %s,
+                               amount = %s,
+                               date = %s,
+                               payment_method = %s
+                           WHERE id = %s
+                           """, (
+                               expense.title,
+                               expense.category,
+                               expense.amount,
+                               expense.date,
+                               expense.payment_method,
+                               expense_id
+                           ))
+
             conn.commit()
-            print("expenses updated")
-        except sqlite3.Error as error:
-            print(f"expenses database Error: {error}")
+
+            if cursor.rowcount == 0:
+                print("No expense found with that ID")
+            else:
+                print("Expense updated")
+
+        except mysql.connector.Error as error:
+            print(f"Expenses database error: {error}")
+            conn.rollback()
+
         finally:
             cursor.close()
             conn.close()
@@ -114,18 +197,24 @@ class ExpenseRepository:
     def delete_expense_by_title(self, expense_title):
         conn = get_connection()
         cursor = conn.cursor()
+
         try:
-            cursor.execute("DELETE FROM expenses WHERE title = ?",(expense_title,))
+            cursor.execute(
+                "DELETE FROM expenses WHERE title = %s",
+                (expense_title,)
+            )
+
             conn.commit()
-            print("expenses deleted")
-        except sqlite3.Error as error:
-            print(f"expenses database Error: {error}")
+
+            if cursor.rowcount == 0:
+                print("No expense found with that title")
+            else:
+                print("Expense deleted")
+
+        except mysql.connector.Error as error:
+            print(f"Expenses database error: {error}")
+            conn.rollback()
+
         finally:
             cursor.close()
             conn.close()
-
-
-
-
-
-
