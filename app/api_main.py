@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import HTTPException
 from typing import List
 from models.expense_api_model import (
@@ -12,6 +12,13 @@ from models.expense import Expense
 from services.expense_services import ExpenseService
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 expense_service = ExpenseService()
 

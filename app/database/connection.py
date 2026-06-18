@@ -10,7 +10,6 @@ This file has two jobs:
 1. setup() creates the database and expenses table.
 2. get_connection() returns a reusable database connection for the repository layer.
 """
-
 import mysql.connector
 
 def setup():
