@@ -39,7 +39,7 @@ def setup():
         cursor.execute("""
                        CREATE TABLE IF NOT EXISTS expenses (
                             id SERIAL PRIMARY KEY,
-                            title TEXT NOT NULL,
+                            title TEXT NOT NULL ,
                             category TEXT NOT NULL,
                             amount FLOAT NOT NULL,
                             date DATE NOT NULL,
