@@ -14,6 +14,9 @@ import { ExpenseService } from '../../services/expense.service';
 })
 export class ExpenseListComponent implements OnInit {
 
+  isEditing: boolean = false;
+  editingExpenseId: number | undefined = undefined;
+
   expenses: Expense[] = [];
 
   newExpense: Expense = {
@@ -69,5 +72,46 @@ export class ExpenseListComponent implements OnInit {
   getAverageExpense(): number {
     if (this.expenses.length === 0) return 0;
     return this.getTotalSpending() / this.expenses.length;
+  }
+
+  editExpense(expense: Expense): void {
+    this.isEditing = true;
+    this.editingExpenseId = expense.id;
+
+    this.newExpense = {
+      id: expense.id,
+      title: expense.title,
+      category: expense.category,
+      amount: expense.amount,
+      date: expense.date,
+      payment_method: expense.payment_method
+    };
+  }
+
+  cancelEdit(): void {
+    this.isEditing = false;
+    this.editingExpenseId = undefined;
+
+    this.newExpense = {
+      title: '',
+      category: '',
+      amount: 0,
+      date: '',
+      payment_method: ''
+    };
+  }
+
+  saveExpense(): void {
+    if (this.isEditing && this.editingExpenseId) {
+      this.expenseService.updateExpense(this.editingExpenseId, this.newExpense).subscribe({
+        next: () => {
+          this.loadExpenses();
+          this.cancelEdit();
+        },
+        error: (error) => console.error('Error updating expense', error)
+      });
+    } else {
+      this.addExpense();
+    }
   }
 }

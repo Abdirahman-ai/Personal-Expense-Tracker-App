@@ -2,7 +2,7 @@
 
   <header class="dashboard-header">
     <div>
-      <h1>Expense Tracker</h1>
+      <h1>Expense Tracker </h1>
       <p>Manage and analyze your spending in one place.</p>
     </div>
   </header>
@@ -27,7 +27,7 @@
   <section class="form-card">
     <h2>Add New Expense</h2>
 
-    <form (ngSubmit)="addExpense()" class="expense-form">
+    <form (ngSubmit)="saveExpense()" class="expense-form">
       <input type="text" placeholder="Title" [(ngModel)]="newExpense.title" name="title" required>
 
       <input type="text" placeholder="Category" [(ngModel)]="newExpense.category" name="category" required>
@@ -38,7 +38,22 @@
 
       <input type="text" placeholder="Payment Method" [(ngModel)]="newExpense.payment_method" name="payment_method" required>
 
-      <button type="submit">Add Expense</button>
+      <button type="submit">
+        {{ isEditing ? 'Update Expense' : 'Add Expense' }}
+      </button>
+
+      <div
+        class="button-group"
+        *ngIf="isEditing">
+
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="cancelEdit()">
+          Cancel
+        </button>
+
+      </div>
     </form>
   </section>
 
@@ -67,6 +82,7 @@
         <td>{{ expense.date }}</td>
         <td>{{ expense.payment_method }}</td>
         <td>
+          <button class="edit-btn" (click)="editExpense(expense)">Edit</button>
           <button class="delete-btn" (click)="deleteExpense(expense.id)">Delete</button>
         </td>
       </tr>

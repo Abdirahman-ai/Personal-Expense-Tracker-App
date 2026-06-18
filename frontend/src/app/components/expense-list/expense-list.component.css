@@ -69,6 +69,8 @@
   color: white;
   font-weight: bold;
   cursor: pointer;
+
+  min-height: 48px;
 }
 
 .expense-form button:hover {
@@ -118,4 +120,41 @@ td {
   .expense-form {
     grid-template-columns: 1fr;
   }
+}
+.edit-btn {
+  border: none;
+  background: #16a34a;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.edit-btn:hover {
+  background: #15803d;
+}
+
+.button-group {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+
+.button-group button {
+  width: 180px;
+  min-height: 48px;
+  padding: 12px;
+}
+
+.cancel-btn {
+  width: 180px;
+  min-height: 48px;
+  background: #6b7280 !important;
+}
+
+.cancel-btn:hover {
+  background: #4b5563 !important;
 }
