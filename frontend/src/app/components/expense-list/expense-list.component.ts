@@ -21,6 +21,9 @@ export class ExpenseListComponent implements OnInit {
 
   expenses: Expense[] = [];
   searchTitle: string = '';
+  startDate: string = '';
+  endDate: string = '';
+  sortOption: string = 'date-desc';
 
   newExpense: Expense = {
     title: '',
@@ -69,12 +72,16 @@ export class ExpenseListComponent implements OnInit {
   }
 
   getTotalSpending(): number {
-    return this.expenses.reduce((total, expense) => total + Number(expense.amount), 0);
+    return this.getFilteredExpenses()
+      .reduce((total, expense) => total + Number(expense.amount), 0);
   }
 
   getAverageExpense(): number {
-    if (this.expenses.length === 0) return 0;
-    return this.getTotalSpending() / this.expenses.length;
+    const filteredExpenses = this.getFilteredExpenses();
+
+    if (filteredExpenses.length === 0) return 0;
+
+    return this.getTotalSpending() / filteredExpenses.length;
   }
 
   editExpense(expense: Expense): void {
@@ -119,12 +126,122 @@ export class ExpenseListComponent implements OnInit {
   }
 
   getFilteredExpenses(): Expense[] {
-    if (!this.searchTitle.trim()) {
-      return this.expenses;
+
+    let filteredExpenses = [...this.expenses];
+
+    if (this.searchTitle.trim()) {
+      filteredExpenses = filteredExpenses.filter(expense =>
+        expense.title.toLowerCase().includes(
+          this.searchTitle.toLowerCase()
+        )
+      );
     }
 
-    return this.expenses.filter(expense =>
-      expense.title.toLowerCase().includes(this.searchTitle.toLowerCase())
+    if (this.startDate) {
+      filteredExpenses = filteredExpenses.filter(expense =>
+        expense.date >= this.startDate
+      );
+    }
+
+    if (this.endDate) {
+      filteredExpenses = filteredExpenses.filter(expense =>
+        expense.date <= this.endDate
+      );
+    }
+
+    switch (this.sortOption) {
+
+      case 'date-desc':
+        filteredExpenses.sort((a, b) =>
+          b.date.localeCompare(a.date)
+        );
+        break;
+
+      case 'date-asc':
+        filteredExpenses.sort((a, b) =>
+          a.date.localeCompare(b.date)
+        );
+        break;
+
+      case 'amount-desc':
+        filteredExpenses.sort((a, b) =>
+          b.amount - a.amount
+        );
+        break;
+
+      case 'amount-asc':
+        filteredExpenses.sort((a, b) =>
+          a.amount - b.amount
+        );
+        break;
+
+      case 'title-asc':
+        filteredExpenses.sort((a, b) =>
+          a.title.localeCompare(b.title)
+        );
+        break;
+
+      case 'title-desc':
+        filteredExpenses.sort((a, b) =>
+          b.title.localeCompare(a.title)
+        );
+        break;
+    }
+
+    return filteredExpenses;
+  }
+
+  clearFilters(): void {
+    this.searchTitle = '';
+    this.startDate = '';
+    this.endDate = '';
+  }
+
+  getMostExpensiveExpense(): number {
+    const filteredExpenses = this.getFilteredExpenses();
+
+    if (filteredExpenses.length === 0) {
+      return 0;
+    }
+
+    return Math.max(...filteredExpenses.map(expense => Number(expense.amount)));
+  }
+
+  getTopCategory(): string {
+    const filteredExpenses = this.getFilteredExpenses();
+
+    if (filteredExpenses.length === 0) {
+      return 'N/A';
+    }
+
+    const counts: { [key: string]: number } = {};
+
+    filteredExpenses.forEach(expense => {
+      counts[expense.category] = (counts[expense.category] || 0) + 1;
+    });
+
+    return Object.keys(counts).reduce((a, b) =>
+      counts[a] > counts[b] ? a : b
     );
   }
+
+  getMostUsedPaymentMethod(): string {
+    const filteredExpenses = this.getFilteredExpenses();
+
+    if (filteredExpenses.length === 0) {
+      return 'N/A';
+    }
+
+    const counts: { [key: string]: number } = {};
+
+    filteredExpenses.forEach(expense => {
+      counts[expense.payment_method] =
+        (counts[expense.payment_method] || 0) + 1;
+    });
+
+    return Object.keys(counts).reduce((a, b) =>
+      counts[a] > counts[b] ? a : b
+    );
+  }
+
 }

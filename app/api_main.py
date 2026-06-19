@@ -11,6 +11,8 @@ from models.expense import Expense
 # from models.expense_api_model import ExpenseApiModel
 from services.expense_services import ExpenseService
 
+from database.connection import get_connection
+
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -151,4 +153,46 @@ def delete_expense(expense_id: int):
         "message": f"Expense {expense_id} deleted successfully"
     }
 
+@app.get("/analytics/category-summary")
+def get_category_summary():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+                   SELECT category, SUM(amount)
+                   FROM expenses
+                   GROUP BY category
+                   """)
+
+    rows = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return [
+        {"category": row[0], "total": float(row[1])}
+        for row in rows
+    ]
+
+
+@app.get("/analytics/payment-summary")
+def get_payment_summary():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+                   SELECT payment_method, SUM(amount)
+                   FROM expenses
+                   GROUP BY payment_method
+                   """)
+
+    rows = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return [
+        {"payment_method": row[0], "total": float(row[1])}
+        for row in rows
+    ]
 setup()

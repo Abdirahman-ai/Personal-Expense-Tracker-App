@@ -15,7 +15,7 @@
 
     <div class="summary-card">
       <p>Total Expenses</p>
-      <h2>{{ expenses.length }}</h2>
+      <h2>{{ getFilteredExpenses().length }}</h2>
     </div>
 
     <div class="summary-card">
@@ -84,11 +84,35 @@
   </section>
 
   <section class="table-card">
-    <div class="search-bar">
+    <div class="filters-bar">
+
       <input
         type="text"
         placeholder="Search by title..."
         [(ngModel)]="searchTitle">
+
+      <input
+        type="date"
+        [(ngModel)]="startDate">
+
+      <input
+        type="date"
+        [(ngModel)]="endDate">
+
+      <select [(ngModel)]="sortOption">
+        <option value="date-desc">Newest First</option>
+        <option value="date-asc">Oldest First</option>
+        <option value="amount-desc">Highest Amount</option>
+        <option value="amount-asc">Lowest Amount</option>
+        <option value="title-asc">Title A-Z</option>
+        <option value="title-desc">Title Z-A</option>
+      </select>
+
+      <button
+        type="button"
+        (click)="clearFilters()">
+        Clear Filters
+      </button>
     </div>
 
     <h2>Expense History</h2>
@@ -127,6 +151,37 @@
     </p>
   </section>
 
-  <app-analytics-dashboard></app-analytics-dashboard>
+  <app-analytics-dashboard
+    [expenses]="getFilteredExpenses()">
+  </app-analytics-dashboard>
+
+  <section class="insights-card">
+    <h2>Quick Insights</h2>
+
+    <div class="insights-grid">
+
+      <div class="insight-item">
+        <span>Most Expensive Expense</span>
+        <strong>
+          ${{ getMostExpensiveExpense().toFixed(2) }}
+        </strong>
+      </div>
+
+      <div class="insight-item">
+        <span>Top Category</span>
+        <strong>
+          {{ getTopCategory() }}
+        </strong>
+      </div>
+
+      <div class="insight-item">
+        <span>Most Used Payment Method</span>
+        <strong>
+          {{ getMostUsedPaymentMethod() }}
+        </strong>
+      </div>
+
+    </div>
+  </section>
 
 </div>

@@ -150,15 +150,6 @@
   background: #4b5563 !important;
 }
 
-.search-bar {
-  margin: 16px 0;
-}
-
-.search-bar input {
-  width: 100%;
-  max-width: 600px;
-}
-
 table {
   width: 100%;
   border-collapse: collapse;
@@ -229,4 +220,98 @@ tbody tr:hover {
   .dashboard-container {
     padding: 20px;
   }
+}
+
+
+.insights-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 28px;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
+}
+
+.insights-card h2 {
+  margin-top: 0;
+}
+
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.insight-item {
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+}
+
+.insight-item span {
+  display: block;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.insight-item strong {
+  font-size: 22px;
+  color: #0f172a;
+}
+
+
+.filters-bar {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 12px;
+  margin: 16px 0;
+  align-items: center;
+}
+
+.filters-bar input {
+  padding: 13px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+  outline: none;
+}
+
+.filters-bar input:focus {
+  border-color: #2563eb;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.filters-bar button {
+  border: none;
+  border-radius: 12px;
+  background: #64748b;
+  color: white;
+  font-weight: bold;
+  padding: 13px 16px;
+  cursor: pointer;
+}
+
+.filters-bar button:hover {
+  background: #475569;
+}
+
+@media (max-width: 1000px) {
+  .filters-bar {
+    grid-template-columns: 1fr;
+  }
+}
+
+.filters-bar select {
+  padding: 13px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+  outline: none;
+}
+
+.filters-bar select:focus {
+  border-color: #2563eb;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }

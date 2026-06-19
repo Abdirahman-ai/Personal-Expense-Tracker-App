@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartType } from 'chart.js';
+import { Component, Input, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-analytics-dashboard',
@@ -11,10 +10,11 @@ import { ChartConfiguration, ChartType } from 'chart.js';
   templateUrl: './analytics-dashboard.component.html',
   styleUrl: './analytics-dashboard.component.css'
 })
-export class AnalyticsDashboardComponent implements OnInit {
+export class AnalyticsDashboardComponent implements OnChanges {
 
   categoryBarChartType: ChartType = 'bar';
   paymentPieChartType: ChartType = 'pie';
+  @Input() expenses: any[] = [];
 
   categoryBarChartData: ChartConfiguration['data'] = {
     labels: [],
@@ -54,51 +54,40 @@ export class AnalyticsDashboardComponent implements OnInit {
      }
    }
  };
-
-  constructor(private http: HttpClient) {}
-
-  ngOnInit(): void {
-    this.loadCategorySummary();
-    this.loadPaymentSummary();
+  ngOnChanges(): void {
+    this.updateCharts();
   }
 
-  loadCategorySummary(): void {
-    this.http.get<any[]>('http://127.0.0.1:8000/analytics/category-summary')
-      .subscribe({
-        next: (data) => {
-          this.categoryBarChartData = {
-            labels: data.map(item => item.category),
-            datasets: [
-              {
-                label: 'Spending by Category',
-                data: data.map(item => item.total)
-              }
-            ]
-          };
-        },
-        error: (error) => {
-          console.error('Error loading category summary', error);
-        }
-      });
-  }
+  updateCharts(): void {
+    const categoryTotals: { [key: string]: number } = {};
+    const paymentTotals: { [key: string]: number } = {};
 
-  loadPaymentSummary(): void {
-    this.http.get<any[]>('http://127.0.0.1:8000/analytics/payment-summary')
-      .subscribe({
-        next: (data) => {
-          this.paymentPieChartData = {
-            labels: data.map(item => item.payment_method),
-            datasets: [
-              {
-                label: 'Spending by Payment Method',
-                data: data.map(item => item.total)
-              }
-            ]
-          };
-        },
-        error: (error) => {
-          console.error('Error loading payment summary', error);
+    this.expenses.forEach(expense => {
+      categoryTotals[expense.category] =
+        (categoryTotals[expense.category] || 0) + Number(expense.amount);
+
+      paymentTotals[expense.payment_method] =
+        (paymentTotals[expense.payment_method] || 0) + Number(expense.amount);
+    });
+
+    this.categoryBarChartData = {
+      labels: Object.keys(categoryTotals),
+      datasets: [
+        {
+          label: 'Spending by Category',
+          data: Object.values(categoryTotals)
         }
-      });
+      ]
+    };
+
+    this.paymentPieChartData = {
+      labels: Object.keys(paymentTotals),
+      datasets: [
+        {
+          label: 'Spending by Payment Method',
+          data: Object.values(paymentTotals)
+        }
+      ]
+    };
   }
 }
