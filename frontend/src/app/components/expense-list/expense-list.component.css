@@ -158,3 +158,15 @@ td {
 .cancel-btn:hover {
   background: #4b5563 !important;
 }
+
+.search-bar {
+  margin: 16px 0;
+}
+
+.search-bar input {
+  width: 100%;
+  max-width: 350px;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}

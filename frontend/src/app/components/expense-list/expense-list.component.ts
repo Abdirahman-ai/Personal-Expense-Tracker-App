@@ -18,6 +18,7 @@ export class ExpenseListComponent implements OnInit {
   editingExpenseId: number | undefined = undefined;
 
   expenses: Expense[] = [];
+  searchTitle: string = '';
 
   newExpense: Expense = {
     title: '',
@@ -113,5 +114,15 @@ export class ExpenseListComponent implements OnInit {
     } else {
       this.addExpense();
     }
+  }
+
+  getFilteredExpenses(): Expense[] {
+    if (!this.searchTitle.trim()) {
+      return this.expenses;
+    }
+
+    return this.expenses.filter(expense =>
+      expense.title.toLowerCase().includes(this.searchTitle.toLowerCase())
+    );
   }
 }
