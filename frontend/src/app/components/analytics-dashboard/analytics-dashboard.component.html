@@ -1,0 +1,25 @@
+<section class="analytics-card">
+  <h2>Analytics Dashboard</h2>
+
+  <div class="charts-grid">
+    <div class="chart-box">
+      <h3>Spending by Category</h3>
+      <canvas
+        baseChart
+        [data]="categoryBarChartData"
+        [type]="categoryBarChartType"
+        [options]="categoryBarChartOptions">
+      </canvas>
+    </div>
+
+    <div class="chart-box">
+      <h3>Spending by Payment Method</h3>
+      <canvas
+        baseChart
+        [data]="paymentPieChartData"
+        [type]="paymentPieChartType"
+        [options]="paymentPieChartOptions">
+      </canvas>
+    </div>
+  </div>
+</section>

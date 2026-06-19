@@ -5,10 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { Expense } from '../../models/expense';
 import { ExpenseService } from '../../services/expense.service';
 
+import { AnalyticsDashboardComponent } from '../analytics-dashboard/analytics-dashboard.component';
+
 @Component({
   selector: 'app-expense-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, AnalyticsDashboardComponent],
   templateUrl: './expense-list.component.html',
   styleUrl: './expense-list.component.css'
 })
