@@ -31,3 +31,7 @@
     grid-template-columns: 1fr;
   }
 }
+
+.chart-box {
+  min-height: 280px;
+}

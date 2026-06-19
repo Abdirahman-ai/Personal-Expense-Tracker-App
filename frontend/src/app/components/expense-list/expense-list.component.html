@@ -2,8 +2,8 @@
 
   <header class="dashboard-header">
     <div>
-      <h1>Expense Tracker </h1>
-      <p>Manage and analyze your spending in one place.</p>
+      <h1>💰 Expense Tracker</h1>
+      <p>Track spending, monitor trends, and manage your finances.</p>
     </div>
   </header>
 
@@ -24,10 +24,8 @@
     </div>
   </section>
 
-  <app-analytics-dashboard></app-analytics-dashboard>
-
   <section class="form-card">
-    <h2>Add New Expense</h2>
+    <h2>➕ Add New Expense</h2>
 
     <form (ngSubmit)="saveExpense()" class="expense-form">
       <input type="text" placeholder="Title" [(ngModel)]="newExpense.title" name="title" required>
@@ -93,7 +91,7 @@
         [(ngModel)]="searchTitle">
     </div>
 
-    <h2>Expenses</h2>
+    <h2>Expense History</h2>
 
     <table>
       <thead>
@@ -128,5 +126,7 @@
       No expenses found.
     </p>
   </section>
+
+  <app-analytics-dashboard></app-analytics-dashboard>
 
 </div>
