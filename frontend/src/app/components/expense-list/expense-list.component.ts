@@ -24,6 +24,7 @@ export class ExpenseListComponent implements OnInit {
   startDate: string = '';
   endDate: string = '';
   sortOption: string = 'date-desc';
+  viewMode: string = 'all';
 
   newExpense: Expense = {
     title: '',
@@ -244,4 +245,45 @@ export class ExpenseListComponent implements OnInit {
     );
   }
 
+  getMonthlySummary(): { period: string; total: number; count: number }[] {
+    const monthlyTotals: { [key: string]: { total: number; count: number } } = {};
+
+    this.getFilteredExpenses().forEach(expense => {
+      const month = expense.date.substring(0, 7);
+
+      if (!monthlyTotals[month]) {
+        monthlyTotals[month] = { total: 0, count: 0 };
+      }
+
+      monthlyTotals[month].total += Number(expense.amount);
+      monthlyTotals[month].count++;
+    });
+
+    return Object.keys(monthlyTotals).map(month => ({
+      period: month,
+      total: monthlyTotals[month].total,
+      count: monthlyTotals[month].count
+    }));
+  }
+
+  getYearlySummary(): { period: string; total: number; count: number }[] {
+    const yearlyTotals: { [key: string]: { total: number; count: number } } = {};
+
+    this.getFilteredExpenses().forEach(expense => {
+      const year = expense.date.substring(0, 4);
+
+      if (!yearlyTotals[year]) {
+        yearlyTotals[year] = { total: 0, count: 0 };
+      }
+
+      yearlyTotals[year].total += Number(expense.amount);
+      yearlyTotals[year].count++;
+    });
+
+    return Object.keys(yearlyTotals).map(year => ({
+      period: year,
+      total: yearlyTotals[year].total,
+      count: yearlyTotals[year].count
+    }));
+  }
 }

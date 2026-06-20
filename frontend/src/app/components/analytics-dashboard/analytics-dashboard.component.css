@@ -1,29 +1,40 @@
 .analytics-card {
-  background: white;
-  border-radius: 14px;
-  padding: 24px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 20px;
+  padding: 26px;
   margin-bottom: 28px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
+  border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 .analytics-card h2 {
   margin-top: 0;
+  margin-bottom: 20px;
+  color: #0f172a;
 }
 
 .charts-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 24px;
-  align-items: stretch;
 }
 
 .chart-box {
-  min-height: 340px;
+  background: linear-gradient(135deg, #f8fafc, #eef2ff);
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+
+  display: flex;
+  flex-direction: column;
+  height: 350px;
 }
 
 .chart-box h3 {
   margin-top: 0;
   margin-bottom: 16px;
+  color: #334155;
 }
 
 @media (max-width: 900px) {
@@ -32,6 +43,12 @@
   }
 }
 
-.chart-box {
-  min-height: 280px;
+.chart-canvas {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+.chart-canvas canvas {
+  display: block;
 }

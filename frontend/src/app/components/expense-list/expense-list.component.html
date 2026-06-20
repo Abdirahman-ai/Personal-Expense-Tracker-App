@@ -108,6 +108,12 @@
         <option value="title-desc">Title Z-A</option>
       </select>
 
+      <select [(ngModel)]="viewMode">
+        <option value="all">All Expenses</option>
+        <option value="monthly">Monthly View</option>
+        <option value="yearly">Yearly View</option>
+      </select>
+
       <button
         type="button"
         (click)="clearFilters()">
@@ -117,34 +123,80 @@
 
     <h2>Expense History</h2>
 
-    <table>
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Title</th>
-        <th>Category</th>
-        <th>Amount</th>
-        <th>Date</th>
-        <th>Payment Method</th>
-        <th>Action</th>
-      </tr>
-      </thead>
+    <div *ngIf="viewMode === 'all'">
+      <table>
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Amount</th>
+          <th>Date</th>
+          <th>Payment Method</th>
+          <th>Action</th>
+        </tr>
+        </thead>
 
-      <tbody>
-      <tr *ngFor="let expense of getFilteredExpenses()">
-        <td>{{ expense.id }}</td>
-        <td>{{ expense.title }}</td>
-        <td>{{ expense.category }}</td>
-        <td>${{ expense.amount }}</td>
-        <td>{{ expense.date }}</td>
-        <td>{{ expense.payment_method }}</td>
-        <td>
-          <button class="edit-btn" (click)="editExpense(expense)">Edit</button>
-          <button class="delete-btn" (click)="deleteExpense(expense.id)">Delete</button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+        <tbody>
+        <tr *ngFor="let expense of getFilteredExpenses()">
+          <td>{{ expense.id }}</td>
+          <td>{{ expense.title }}</td>
+          <td>{{ expense.category }}</td>
+          <td>${{ expense.amount }}</td>
+          <td>{{ expense.date }}</td>
+          <td>{{ expense.payment_method }}</td>
+          <td>
+            <button class="edit-btn" (click)="editExpense(expense)">Edit</button>
+            <button class="delete-btn" (click)="deleteExpense(expense.id)">Delete</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="viewMode === 'monthly'" class="summary-table">
+      <h3>Monthly Expense Summary</h3>
+
+      <table>
+        <thead>
+        <tr>
+          <th>Month</th>
+          <th>Total Spending</th>
+          <th>Number of Expenses</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor="let month of getMonthlySummary()">
+          <td>{{ month.period }}</td>
+          <td>${{ month.total.toFixed(2) }}</td>
+          <td>{{ month.count }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="viewMode === 'yearly'" class="summary-table">
+      <h3>Yearly Expense Summary</h3>
+
+      <table>
+        <thead>
+        <tr>
+          <th>Year</th>
+          <th>Total Spending</th>
+          <th>Number of Expenses</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor="let year of getYearlySummary()">
+          <td>{{ year.period }}</td>
+          <td>${{ year.total.toFixed(2) }}</td>
+          <td>{{ year.count }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
 
     <p *ngIf="getFilteredExpenses().length === 0" class="empty-message">
       No expenses found.

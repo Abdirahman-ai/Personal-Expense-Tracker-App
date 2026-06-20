@@ -4,22 +4,50 @@
   <div class="charts-grid">
     <div class="chart-box">
       <h3>Spending by Category</h3>
-      <canvas
-        baseChart
-        [data]="categoryBarChartData"
-        [type]="categoryBarChartType"
-        [options]="categoryBarChartOptions">
-      </canvas>
+      <div class="chart-canvas">
+        <canvas
+          baseChart
+          [data]="categoryBarChartData"
+          [type]="categoryBarChartType"
+          [options]="categoryBarChartOptions">
+        </canvas>
+      </div>
     </div>
 
     <div class="chart-box">
       <h3>Spending by Payment Method</h3>
-      <canvas
-        baseChart
-        [data]="paymentPieChartData"
-        [type]="paymentPieChartType"
-        [options]="paymentPieChartOptions">
-      </canvas>
+      <div class="chart-canvas">
+        <canvas
+          baseChart
+          [data]="paymentPieChartData"
+          [type]="paymentPieChartType"
+          [options]="paymentPieChartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <div class="chart-box">
+      <h3>Monthly Spending Trend</h3>
+      <div class="chart-canvas">
+        <canvas
+          baseChart
+          [data]="monthlyLineChartData"
+          [type]="monthlyLineChartType"
+          [options]="monthlyLineChartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <div class="chart-box">
+      <h3>Yearly Spending Summary</h3>
+      <div class="chart-canvas">
+        <canvas
+          baseChart
+          [data]="yearlyBarChartData"
+          [type]="yearlyBarChartType"
+          [options]="yearlyBarChartOptions">
+        </canvas>
+      </div>
     </div>
   </div>
 </section>
