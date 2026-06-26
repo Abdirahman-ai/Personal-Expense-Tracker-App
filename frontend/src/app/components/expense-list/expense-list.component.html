@@ -138,7 +138,7 @@
         </thead>
 
         <tbody>
-        <tr *ngFor="let expense of getFilteredExpenses()">
+        <tr *ngFor="let expense of getPaginatedExpenses()">
           <td>{{ expense.id }}</td>
           <td>{{ expense.title }}</td>
           <td>{{ expense.category }}</td>
@@ -152,6 +152,19 @@
         </tr>
         </tbody>
       </table>
+      <div class="pagination-controls" *ngIf="getFilteredExpenses().length > itemsPerPage">
+        <button type="button" (click)="previousPage()" [disabled]="currentPage === 1">
+          Previous
+        </button>
+
+        <span>
+    Page {{ currentPage }} of {{ getTotalPages() }}
+  </span>
+
+        <button type="button" (click)="nextPage()" [disabled]="currentPage === getTotalPages()">
+          Next
+        </button>
+      </div>
     </div>
 
     <div *ngIf="viewMode === 'monthly'" class="summary-table">

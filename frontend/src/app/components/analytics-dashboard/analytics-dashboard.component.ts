@@ -41,26 +41,105 @@ export class AnalyticsDashboardComponent implements OnChanges {
 
   categoryBarChartOptions: ChartConfiguration['options'] = {
     responsive: true,
-     maintainAspectRatio: false,
-    plugins: { legend: { display: true } }
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        ticks: {
+          color: '#94a3b8'
+        },
+        grid: {
+          color: 'rgba(255,255,255,0.05)'
+        }
+      },
+      y: {
+        ticks: {
+          color: '#94a3b8'
+        },
+        grid: {
+          color: 'rgba(255,255,255,0.05)'
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        labels: {
+          color: '#f8fafc'
+        }
+      }
+    }
   };
 
   paymentPieChartOptions: ChartConfiguration['options'] = {
     responsive: true,
-     maintainAspectRatio: false,
-    plugins: { legend: { display: true, position: 'bottom' } }
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          color: '#f8fafc'
+        }
+      }
+    }
   };
 
   monthlyLineChartOptions: ChartConfiguration['options'] = {
     responsive: true,
-     maintainAspectRatio: false,
-    plugins: { legend: { display: true } }
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        ticks: {
+          color: '#94a3b8'
+        },
+        grid: {
+          color: 'rgba(255,255,255,0.05)'
+        }
+      },
+      y: {
+        ticks: {
+          color: '#94a3b8'
+        },
+        grid: {
+          color: 'rgba(255,255,255,0.05)'
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        labels: {
+          color: '#f8fafc'
+        }
+      }
+    }
   };
 
   yearlyBarChartOptions: ChartConfiguration['options'] = {
     responsive: true,
-     maintainAspectRatio: false,
-    plugins: { legend: { display: true } }
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        ticks: {
+          color: '#94a3b8'
+        },
+        grid: {
+          color: 'rgba(255,255,255,0.05)'
+        }
+      },
+      y: {
+        ticks: {
+          color: '#94a3b8'
+        },
+        grid: {
+          color: 'rgba(255,255,255,0.05)'
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        labels: {
+          color: '#f8fafc'
+        }
+      }
+    }
   };
 
   ngOnChanges(): void {

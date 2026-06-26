@@ -25,6 +25,8 @@ export class ExpenseListComponent implements OnInit {
   endDate: string = '';
   sortOption: string = 'date-desc';
   viewMode: string = 'all';
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
 
   newExpense: Expense = {
     title: '',
@@ -192,10 +194,34 @@ export class ExpenseListComponent implements OnInit {
     return filteredExpenses;
   }
 
+  getPaginatedExpenses(): Expense[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+
+    return this.getFilteredExpenses().slice(startIndex, endIndex);
+  }
+
+  getTotalPages(): number {
+    return Math.ceil(this.getFilteredExpenses().length / this.itemsPerPage);
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.getTotalPages()) {
+      this.currentPage++;
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
   clearFilters(): void {
     this.searchTitle = '';
     this.startDate = '';
     this.endDate = '';
+    this.currentPage = 1;
   }
 
   getMostExpensiveExpense(): number {
